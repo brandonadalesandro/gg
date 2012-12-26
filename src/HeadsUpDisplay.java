@@ -14,9 +14,9 @@ public class HeadsUpDisplay {
 	
 	public HeadsUpDisplay(int w, int h){
 		elements = new HashMap<String, GameObject>();
-		elements.put("Wall", new Wall( 10, h));
-		elements.put("Turret", new Turret(20, h));
-		elements.put("Sword & Shield", new Sword(30, h));
+		elements.put("Wall", new Wall(20, 20));
+		elements.put("Turret", new Turret(40, 40));
+		elements.put("Sword & Shield", new Sword(60, 60));
 		//todo find a way to calculate these positions!
 	}
 	

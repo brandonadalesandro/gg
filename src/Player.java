@@ -32,7 +32,7 @@ public class Player extends GameObject{
 		Graphics2D g2d = (Graphics2D)g;
 		g2d.setColor(Color.black);
 		g2d.drawOval(this.getX(), this.getY(), this.getWidth(), this.getHeight());
-		sword.draw(g2d, rotation, this.getX() + this.getWidth()/2, this.getY() + this.getHeight()/2);
+		//sword.draw(g2d, rotation, this.getX() + this.getWidth()/2, this.getY() + this.getHeight()/2);
 		g2d.drawLine(getX() + getWidth()/2, getY() + getHeight()/2, mousex, mousey);
 		g2d.rotate(0);
 	}
@@ -68,13 +68,13 @@ public class Player extends GameObject{
 				setX(getX() + SPEED);
 		}
 		
-		sword.setX(this.getX() + this.getWidth()/2);
-		sword.setY(this.getY() - sword.getHeight());
+		//sword.setX(this.getX() + this.getWidth()/2);
+		//sword.setY(this.getY() - sword.getHeight());
 	}
 	
 	//this method handles the downpress
 	//update for keypress
-	public void update(KeyEvent e, List<Wall> walls){
+	public void update(KeyEvent e, List<PlaceableGameObject> list){
 		//w--up
 		//s--down
 		//a--left
@@ -82,28 +82,28 @@ public class Player extends GameObject{
 		
 		if(e.getKeyCode() == KeyEvent.VK_W){
 			boolean b = true;
-			for(Wall w : walls)
+			for(PlaceableGameObject w : list)
 				if(Helper.isBoundingBoxCollision(getX(), getY() - SPEED, getWidth(), getHeight(), w.getX(), w.getY(), w.getWidth(), w.getHeight())){b = false;}
 			if(b)
 				isUp = true;
 		}
 		else if(e.getKeyCode() == KeyEvent.VK_S){
 			boolean b = true;
-			for(Wall w : walls)
+			for(PlaceableGameObject w : list)
 				if(Helper.isBoundingBoxCollision(getX(), getY() + SPEED, getWidth(), getHeight(), w.getX(), w.getY(), w.getWidth(), w.getHeight())){b = false;}
 			if(b)
 				isDown = true;
 		}
 		else if(e.getKeyCode() == KeyEvent.VK_A){
 			boolean b = true;
-			for(Wall w : walls)
+			for(PlaceableGameObject w : list)
 				if(Helper.isBoundingBoxCollision(getX() - SPEED, getY(), getWidth(), getHeight(), w.getX(), w.getY(), w.getWidth(), w.getHeight())){b = false;}
 			if(b)
 				isLeft = true;
 		}
 		else if(e.getKeyCode() == KeyEvent.VK_D){
 			boolean b = true;
-			for(Wall w : walls)
+			for(PlaceableGameObject w : list)
 				if(Helper.isBoundingBoxCollision(getX() + SPEED, getY(), getWidth(), getHeight(), w.getX(), w.getY(), w.getWidth(), w.getHeight())){b = false;}
 			if(b)
 				isRight = true;
@@ -149,6 +149,25 @@ public class Player extends GameObject{
 	}
 	
 	public void equip(Map<String, GameObject> e){
+		for(String s : e.keySet())
+			equipment = e.get(s);
+	}
+	
+	public void doLeftAction(WallBoard b, List<GameObject> obs){
+		//it's placeable!
+		if(equipment instanceof PlaceableGameObject){
+			
+			b.putPotentialObject(((PlaceableGameObject)equipment).leftAction(b), obs);
+		//it's not placeable, but it's not null!:D	
+		}else if(equipment instanceof GameObject){
+			
+			
+			
+			
+		}
+	}
+	
+	public void doRightAction(WallBoard b){
 		
 	}
 	

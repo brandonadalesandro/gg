@@ -29,5 +29,10 @@ public class PlaceableGameObject extends GameObject{
 		if(!isReal){insideColor = Color.white;outsideColor = Color.black;}
 		if(isBlocked){insideColor = Color.red; outsideColor = Color.LIGHT_GRAY;}
 	}
+	
+	public PlaceableGameObject leftAction(WallBoard b){
+		return this;
+	}
+	
 
 }

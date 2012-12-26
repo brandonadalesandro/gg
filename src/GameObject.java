@@ -71,4 +71,12 @@ public class GameObject {
 	public boolean isHud(){
 		return isHud;
 	}
+	
+	public void leftAction(){
+		
+	}
+	
+	public void rightAction(){
+		
+	}
 }

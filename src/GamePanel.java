@@ -16,9 +16,6 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, KeyLis
 
 	//dem walls
 	GameFrame frame;
-	Wall potentialWall;
-	ArrayList<Wall> walls = new ArrayList<Wall>();
-	ArrayList<Wall> lineWalls = new ArrayList<Wall>();
 	Player player;
 	Enemy enemy;
 	MouseSelection mouseSelection;
@@ -40,6 +37,8 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, KeyLis
 		objects.add(player);
 		objects.add(enemy);
 		mouseSelection = new MouseSelection();
+		
+		setSize(new Dimension(640, 480));
 		setDoubleBuffered(true);
 		setFocusable(true);
 		addKeyListener(this);
@@ -52,8 +51,8 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, KeyLis
 		
 		t = new Thread(this);
 		t.start();
-		
-		hud = new HeadsUpDisplay(this.getWidth(), this.getHeight());
+		System.out.println(getWidth());
+		hud = new HeadsUpDisplay(getWidth(), getHeight());
 	}
 	
 	@Override
@@ -77,45 +76,14 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, KeyLis
 	public void paint(Graphics g){
 		g.setColor(Color.white);
 		g.clearRect(0, 0, this.getWidth(), this.getHeight());
+		
 		player.draw(g);
 		enemy.draw(g);
 		mouseSelection.draw(g);
 		wallBoard.draw(g);
-		//draw the existing walls
-		for(Wall w : walls)
-			w.draw(g); 
-		
-		//draw the potential wall
-		potentialWall.draw(g);
-		
-		//draw the lineWalls
-		for(Wall w : lineWalls)
-			w.draw(g);
+		hud.draw(g);
 	}
 	
-	public void addWall(int x, int y){
-		Wall wall = new Wall(potentialWall.getX(), potentialWall.getY());
-		//if the player is colliding with the potential wall, no wall
-		//if(Helper.isBoundingBoxCollision(x, y, wall.width, wall.height, player.getX(), player.getY(), player.width, player.height)){return;}
-		
-		//if the distance between the player and the potential wall is too high, no wall
-		if(!player.inRange(wall.getX(), wall.getY())){return;}
-		//for(Wall w : walls){
-			//if the potential wall is colliding with any existing walls, no wall
-			//if(Helper.isBoundingBoxCollision(x, y, wall.width, wall.height, w.getX(), w.getY(), w.width, w.height)){return;}
-		//}
-		//TODO add collision for enemies, other terrain items etc
-		wall.isReal = true;
-		walls.add(wall);
-	}
-	
-	public void destroyWall(int x, int y){
-		for(Wall w : walls){
-			//if the potential wall is colliding with any existing walls, no wall
-			if((Helper.isBoundingBoxCollision(x, y, 1, 1, w.getX(), w.getY(), w.getWidth(), w.getHeight())) && (Math.abs(Math.sqrt(Math.pow(player.getX() - x, 2) + Math.pow(player.getY() - y, 2) )) <=  player.RANGE)){walls.remove(w);}
-		}
-	}
-
 	  /////////////////////////////////////////////////
 	 //                   EVENTS                    //
 	/////////////////////////////////////////////////
@@ -125,7 +93,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, KeyLis
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
 			frame.dispose();
-		player.update(e, walls);
+		player.update(e, wallBoard.objects());
 		//System.out.println("keypressed");
 	}
 

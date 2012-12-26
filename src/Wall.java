@@ -9,6 +9,10 @@ public class Wall extends PlaceableGameObject{
 	
 	public Wall(int x, int y, boolean isHud){
 		super(x, y, 20, 20, isHud);
+		if(isHud){
+			isReal = true;
+			isBlocked = false;
+		}
 	}
 	
 	public Wall(Wall w){
