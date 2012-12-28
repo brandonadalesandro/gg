@@ -5,11 +5,13 @@ import java.awt.Graphics;
 public class GameObject {
 	private int x, y, w, h;
 	private boolean isHud = false;
+	
+	public GameObject(GameObject o){
+		this(o.getX(), o.getY(), o.getWidth(), o.getHeight(), false);
+	}
+	
 	public GameObject(int x, int y, int w, int h){
-		this.x = x;
-		this.y = y;
-		this.w = w;
-		this.h = h;
+		this(x, y, w, h, false);
 	}
 	
 	public GameObject(int x, int y, int w, int h, boolean isHud){

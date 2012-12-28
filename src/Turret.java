@@ -16,12 +16,16 @@ public class Turret extends PlaceableGameObject{
 	private Shape barrel;
 	int counter = 0;
 	
+	public Turret(Turret t){
+		this(t.getX(), t.getY());
+	}
+	
 	public Turret(int x, int y){
 		this(x, y, false);
 	}
 	
 	public Turret(int x, int y, boolean isHud){
-		super(x, y, 20, 20, isHud);
+		super(x, y, 10, 10, isHud);
 		bullets = new ArrayList<Bullet>();
 	}
 	

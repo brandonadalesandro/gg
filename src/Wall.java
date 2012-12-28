@@ -8,7 +8,7 @@ public class Wall extends PlaceableGameObject{
 	}
 	
 	public Wall(int x, int y, boolean isHud){
-		super(x, y, 20, 20, isHud);
+		super(x, y, 10, 10, isHud);
 		if(isHud){
 			isReal = true;
 			isBlocked = false;
@@ -27,9 +27,14 @@ public class Wall extends PlaceableGameObject{
 		else{wallInside = Color.green; wallOutline = Color.black;}
 		if(isBlocked){wallInside = Color.red; wallOutline = Color.LIGHT_GRAY;}
 		
-		g.setColor(wallOutline);
-		g.drawRect(x, y, getWidth(), getHeight());
-		g.setColor(wallInside);
-		g.fillRect(x + 1, y + 1, getWidth() - 1, getHeight() - 1);
+		if(isHud()){
+			insideColor = Color.white;
+			outsideColor = Color.black;
+		}
+		
+		g.setColor(insideColor);
+		g.drawRect(getX(), getY(), getWidth(), getHeight());
+		g.setColor(outsideColor);
+		g.fillRect(getX() + 1, getY() + 1, getWidth() - 1, getHeight() - 1);
 	}
 }

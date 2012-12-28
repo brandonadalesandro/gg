@@ -30,7 +30,6 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, KeyLis
 	boolean isRightClick = false;
 	
 	public GamePanel(){ 
-		potentialWall = new Wall(mouseX, mouseY);
 		wallBoard = new WallBoard();
 		player = new Player(100, 100);
 		enemy = new Enemy(10, 10);
@@ -93,7 +92,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, KeyLis
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
 			frame.dispose();
-		player.update(e, wallBoard.objects());
+		player.update(e, wallBoard.getObjects());
 		//System.out.println("keypressed");
 	}
 
@@ -132,17 +131,15 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, KeyLis
 		if(e.getButton() == MouseEvent.BUTTON1){
 			isLeftClick = true;
 			//click the hud?
-			Map<String, GameObject> result = hud.click(e.getX(), e.getY());
-			if(result != null){
+			if(hud.click(e.getX(), e.getY())){
 				//the user selected something on the hud, pass it to the player.
-				player.equip(result);
-			}else if(player.inRange(e.getX(), e.getY()))
-				wallBoard.putPotentialObject(new Turret(e.getX(), e.getY()), objects);
+				player.equip(hud.getEquipment());
+			}else
+				player.doLeftAction(wallBoard, objects, e.getX(), e.getY());
 		}
 		else if(e.getButton() == MouseEvent.BUTTON3){
 			isRightClick = true;
 			wallBoard.clearPotentialObjects();
-			destroyWall(e.getX(), e.getY());
 		}
 
 		mouseSelection.mouseClick(e);
@@ -156,8 +153,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, KeyLis
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		isLeftClick = false;
-		isRightClick = false;
-		lineWalls = new ArrayList<Wall>();
+		isRightClick = false;;
 		
 		//new
 		if(e.getButton() == MouseEvent.BUTTON1)

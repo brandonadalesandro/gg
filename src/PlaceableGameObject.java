@@ -7,6 +7,11 @@ public class PlaceableGameObject extends GameObject{
 	public boolean isReal = false;
 	public boolean isBlocked = false;
 	public Color insideColor, outsideColor;
+	
+	public PlaceableGameObject(PlaceableGameObject o){
+		this(o.getX(), o.getY(), o.getWidth(), o.getHeight(), false);
+	}
+	
 	public PlaceableGameObject(int x, int y, int w, int h) {
 		super(x, y, w, h);
 		// TODO Auto-generated constructor stub

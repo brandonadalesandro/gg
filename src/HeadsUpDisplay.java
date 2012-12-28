@@ -11,31 +11,48 @@ public class HeadsUpDisplay {
 	private int maxHealth, curHealth;
 	private int maxEnergy, curEnergy;
 	private int windowWidth, windowHeight;
+	Map<String, GameObject> currEquipment;
 	
 	public HeadsUpDisplay(int w, int h){
+		currEquipment =  new HashMap<String, GameObject>();
+		int spacing = w/4;
 		elements = new HashMap<String, GameObject>();
-		elements.put("Wall", new Wall(20, 20));
-		elements.put("Turret", new Turret(40, 40));
-		elements.put("Sword & Shield", new Sword(60, 60));
+		elements.put("Wall", new Wall(110, h - 100, true));
+		elements.put("Turret", new Turret(220, h - 100, true));
+		elements.put("Sword & Shield", new Sword(330, h - 100));
+		windowWidth = w; windowHeight = h;
 		//todo find a way to calculate these positions!
 	}
 	
 	public void draw(Graphics g){
-//		g.setColor(Color.blue);
+		g.setColor(Color.black);
 //		g.drawRect(10, 10, curEnergy, 50);
 		
 		//todo: update positions of elements using graphics g
-		for(String s : elements.keySet())
+		int counter = 1;
+		for(String s : elements.keySet()){
+			g.drawString(s, 110 * counter, windowHeight - 50);
 			elements.get(s).draw(g);
+			counter++;
+		}
+		
+		
 	}
 	
-	public Map<String, GameObject> click(int x, int y){
+	public boolean click(int x, int y){
 		Map<String, GameObject> result = new HashMap<String, GameObject>();
 		for(String s : elements.keySet()){
 			Rectangle r = new Rectangle(elements.get(s).getX(), elements.get(s).getY(), elements.get(s).getWidth(), elements.get(s).getHeight());
-			if(r.contains(x, y))
-				result.put(s, elements.get(s));
+			if(r.contains(x, y)){
+				currEquipment.clear();
+				currEquipment.put(s, elements.get(s));
+				return true;
+			}
 		}
-		return null;
+		return false;
+	}
+	
+	public Map<String, GameObject> getEquipment(){
+		return currEquipment;
 	}
 }
