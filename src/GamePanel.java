@@ -170,8 +170,9 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, KeyLis
 	public void mouseDragged(MouseEvent e) {
 		//update the mouseSelection
 		mouseSelection.mouseDrag(e);
-		if(isLeftClick)
-			wallBoard.putPotentialObject(new Turret(e.getX(), e.getY()), objects);
+		if(isLeftClick){
+			player.doLeftAction(wallBoard, objects, e.getX(), e.getY());
+		}
 	}
 
 	@Override

@@ -156,10 +156,7 @@ public class Player extends GameObject{
 	public void doLeftAction(WallBoard b, List<GameObject> obs, int x, int y){
 		//it's placeable!
 		if(equipment instanceof PlaceableGameObject){
-			PlaceableGameObject o = ((PlaceableGameObject)equipment).leftAction(b);
-			o.setX(x);
-			o.setY(y);
-			b.putPotentialObject(o, obs);
+			b.putPotentialObject(((PlaceableGameObject) equipment).getNew(x, y), obs);
 		//it's not placeable, but it's not null!:D	
 		}else if(equipment instanceof GameObject){
 			equipment.leftAction();

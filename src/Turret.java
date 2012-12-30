@@ -128,4 +128,8 @@ public class Turret extends PlaceableGameObject{
 			g.drawOval(getX(), getY(), getWidth(), getHeight());
 		}
 	}
+	
+	public PlaceableGameObject getNew(int x, int y){
+		return new Turret(x, y);
+	}
 }

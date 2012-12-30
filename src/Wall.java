@@ -3,6 +3,7 @@ import java.awt.Graphics;
 
 public class Wall extends PlaceableGameObject{
 	private int x, y;
+	
 	public Wall(int x, int y){
 		this(x, y, false);
 	}
@@ -23,9 +24,9 @@ public class Wall extends PlaceableGameObject{
 		Color wallInside = Color.black;
 		Color wallOutline = Color.white;
 		
-		if(isReal){wallInside = Color.white;wallOutline = Color.black;}
-		else{wallInside = Color.green; wallOutline = Color.black;}
-		if(isBlocked){wallInside = Color.red; wallOutline = Color.LIGHT_GRAY;}
+		if(isReal){insideColor = Color.white;outsideColor = Color.black;}
+		else{insideColor = Color.green; outsideColor = Color.black;}
+		if(isBlocked){insideColor = Color.red; outsideColor = Color.LIGHT_GRAY;}
 		
 		if(isHud()){
 			insideColor = Color.white;
@@ -36,5 +37,9 @@ public class Wall extends PlaceableGameObject{
 		g.drawRect(getX(), getY(), getWidth(), getHeight());
 		g.setColor(outsideColor);
 		g.fillRect(getX() + 1, getY() + 1, getWidth() - 1, getHeight() - 1);
+	}
+	
+	public PlaceableGameObject getNew(int x, int y){
+		return new Wall(x, y);
 	}
 }

@@ -39,5 +39,9 @@ public class PlaceableGameObject extends GameObject{
 		return this;
 	}
 	
+	public PlaceableGameObject getNew(int x, int y){
+		return new PlaceableGameObject(x, y, 10, 10);
+	}
+	
 
 }
