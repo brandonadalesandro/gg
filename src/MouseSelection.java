@@ -45,7 +45,6 @@ public class MouseSelection {
 		
 		if(e.getButton() == MouseEvent.BUTTON3){
 			isRightDown = true;
-			System.out.println("mouse click");
 			mouseClickX = e.getX();
 			mouseClickY = e.getY();
 		}
@@ -54,20 +53,17 @@ public class MouseSelection {
 	public void mouseDrag(MouseEvent e){
 		
 		if(isRightDown){
-			System.out.println("mouse drag");
 			mouseDragX = e.getX();
 			mouseDragY = e.getY();
 		}
 	}
 	
 	public void mouseRelease(MouseEvent e){
-		System.out.println("mouse release");
 		isLeftDown = false;
 		isRightDown = false;
 	}
 	
 	public boolean contains(Rectangle r){
-		System.out.println(currRect.contains(r));
 		return currRect.contains(r);
 	}
 	

@@ -23,13 +23,10 @@ public class GameObject {
 	}
 	
 	public void draw(Graphics g){
-		g.setColor(Color.BLACK);
-		g.fillRect(x, y, w, h);
 	}	
 	
 	public void draw(Graphics g, double rotation, int axisx, int axisy){
-		g.setColor(Color.BLACK);
-		g.fillRect(x, y, w, h);
+		draw(g);
 	}
 	
 	public void update(){

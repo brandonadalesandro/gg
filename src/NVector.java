@@ -7,8 +7,10 @@ public class NVector {
 	}
 	
 	public void normalize(){
-		dx =  (dx/Math.sqrt(dx*dx + dy*dy));
-		dy =  (dy/Math.sqrt(dx*dx + dy*dy));
+		double length = Math.sqrt(dx*dx + dy*dy) + 0.0;
+		dx /= length;
+		dy /= length;
+
 	}
 	
 	public double getDX(){return dx;}

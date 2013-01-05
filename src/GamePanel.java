@@ -32,6 +32,9 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, KeyLis
 	public GamePanel(){ 
 		wallBoard = new WallBoard();
 		player = new Player(100, 100);
+		Map<String, GameObject> startingEquipment = new HashMap<String, GameObject>();
+		startingEquipment.put("Sword and Sheild", new Sword(player.getX(), player.getY()));
+		player.equip(startingEquipment);
 		enemy = new Enemy(10, 10);
 		objects.add(player);
 		objects.add(enemy);
@@ -50,7 +53,6 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, KeyLis
 		
 		t = new Thread(this);
 		t.start();
-		System.out.println(getWidth());
 		hud = new HeadsUpDisplay(getWidth(), getHeight());
 	}
 	

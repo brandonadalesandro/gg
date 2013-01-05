@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Turret extends PlaceableGameObject{
 	private double rotation;
-	private int SPEED = 1;
+	private int SPEED = 2;
 	private int RANGE = 10;
 	private GameObject target;
 	private List<Bullet> bullets;
@@ -54,29 +54,17 @@ public class Turret extends PlaceableGameObject{
 	//post: turret follows/shoots at the nearest enemy if it's in range
 	public void update(List<GameObject> objects){
 		counter++;
-		boolean isAssigned = false;
-		if(target != null){
-			for(GameObject o : objects){
-				if(inRange(o.getX(), o.getY()) && o == target && !o.getClass().isInstance(new Player(0, 0))){
-					isAssigned = true;
-					target = o;
-					updateRotation(o.getX(), o.getY());
-					break;
-				}
-			}
-		}else{
-			for(GameObject o : objects){
-				if(inRange(o.getX(), o.getY()) && !o.getClass().isInstance(new Player(0, 0))){
-					updateRotation(o.getX(), o.getY());
-					target = o;
-					break;
-				}
+		for(GameObject o : objects){
+			if(inRange(o.getX(), o.getY()) && !o.getClass().isInstance(new Player(0, 0))){
+				updateRotation(o.getX(), o.getY());
+				target = o;
+				break;
 			}
 		}
 		
 		
 		//todo: add fire rate, add reload bar
-		if(!isHud() && isAssigned && counter > 100 && target != null && inRange(target.getX(), target.getY())){
+		if(!isHud() && counter > 500 && target != null && inRange(target.getX(), target.getY())){
 			updateRotation(target.getX(), target.getY());
 			fire(target);
 			counter = 0;
@@ -99,8 +87,10 @@ public class Turret extends PlaceableGameObject{
 	}
 	
 	public void fire(GameObject o){
-		int dx = getX() - o.getX();
+		int dx = o.getX() - getX();
 		int dy = o.getY() - getY();
+		//System.out.println("DX = " + dx + "\nDY = " + dy);
+		
 		bullets.add(new Bullet((int)barrel.getBounds2D().getX(), (int)barrel.getBounds2D().getY(), SPEED, new NVector(dx, dy)));
 	}
 
@@ -113,7 +103,7 @@ public class Turret extends PlaceableGameObject{
 		private int SPEED;
 		private NVector direction;
 		public Bullet(int x, int y, int speed, NVector v) {
-			super(x, y, 2, 2);
+			super(x, y, 20, 20);
 			SPEED = speed;
 			direction = v;
 			direction.normalize();
@@ -125,7 +115,9 @@ public class Turret extends PlaceableGameObject{
 		}
 		
 		public void draw(Graphics g){
+			g.setColor(Color.black);
 			g.drawOval(getX(), getY(), getWidth(), getHeight());
+			g.drawString("" + direction.getDX() + ", " + direction.getDY(), getX() + getWidth()  , getY() + getHeight());
 		}
 	}
 	

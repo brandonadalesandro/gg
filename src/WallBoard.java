@@ -61,14 +61,12 @@ public class WallBoard {
 				if(Helper.isBoundingBoxCollision(w.getX(), w.getY(), w.getWidth(), w.getHeight(),
 						newOb.getX(), newOb.getY(), newOb.getWidth(), newOb.getHeight())){
 					b = false;
-					System.out.println("colliding");
 				}
 			}
 			
 			//if new wall isn't colliding with any current potential walls, add it
 			if(b){
 				potentialObjects.add(newOb);
-				System.out.println("adding object");
 			}
 	}
 	
@@ -89,11 +87,9 @@ public class WallBoard {
 		for(int i = 0; i < objects.size();){
 			PlaceableGameObject w = objects.get(i);
 			Rectangle obR = new Rectangle(w.getX(), w.getY(), w.getWidth(), w.getHeight());
-			System.out.println("in destroywallsinarea");
 			
 			if(r.contains(obR) || r.intersects(obR)){
 				objects.remove(i);
-				System.out.println("destroying wall");
 			}
 			else
 				i++;

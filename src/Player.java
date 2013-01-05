@@ -23,7 +23,7 @@ public class Player extends GameObject{
 	
 	public Player(int x, int y){
 		super(x, y, 20, 20);
-		
+		sword = new Sword(x, y);
 		rotation = 0;
 	}
 	
@@ -32,7 +32,7 @@ public class Player extends GameObject{
 		Graphics2D g2d = (Graphics2D)g;
 		g2d.setColor(Color.black);
 		g2d.drawOval(this.getX(), this.getY(), this.getWidth(), this.getHeight());
-		//sword.draw(g2d, rotation, this.getX() + this.getWidth()/2, this.getY() + this.getHeight()/2);
+		equipment.draw(g2d, rotation, this.getX() + this.getWidth()/2, this.getY() + this.getHeight()/2);
 		g2d.drawLine(getX() + getWidth()/2, getY() + getHeight()/2, mousex, mousey);
 		g2d.rotate(0);
 	}
@@ -68,8 +68,8 @@ public class Player extends GameObject{
 				setX(getX() + SPEED);
 		}
 		
-		//sword.setX(this.getX() + this.getWidth()/2);
-		//sword.setY(this.getY() - sword.getHeight());
+		equipment.setX(this.getX() + this.getWidth()/2);
+		equipment.setY(this.getY() - sword.getHeight());
 	}
 	
 	//this method handles the downpress
@@ -108,10 +108,10 @@ public class Player extends GameObject{
 			if(b)
 				isRight = true;
 		}
-		System.out.println("UP: " + isUp);
-		System.out.println("DOWN: " + isDown);
-		System.out.println("LEFT: " + isLeft);
-		System.out.println("RIGHT: " + isRight);
+//		System.out.println("UP: " + isUp);
+//		System.out.println("DOWN: " + isDown);
+//		System.out.println("LEFT: " + isLeft);
+//		System.out.println("RIGHT: " + isRight);
 		
 	}
 	
