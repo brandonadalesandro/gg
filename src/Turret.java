@@ -11,6 +11,7 @@ public class Turret extends PlaceableGameObject{
 	private double rotation;
 	private int SPEED = 2;
 	private int RANGE = 10;
+	private int FIRE_RATE = 200;
 	private GameObject target;
 	private List<Bullet> bullets;
 	private Shape barrel;
@@ -64,7 +65,7 @@ public class Turret extends PlaceableGameObject{
 		
 		
 		//todo: add fire rate, add reload bar
-		if(!isHud() && counter > 500 && target != null && inRange(target.getX(), target.getY())){
+		if(!isHud() && counter > FIRE_RATE && target != null && inRange(target.getX(), target.getY())){
 			updateRotation(target.getX(), target.getY());
 			fire(target);
 			counter = 0;

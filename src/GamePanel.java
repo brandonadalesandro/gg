@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 import java.util.*;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -14,20 +15,31 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, KeyLis
 		GamePanel p = new GamePanel();
 	}
 
-	//dem walls
-	GameFrame frame;
-	Player player;
-	Enemy enemy;
-	MouseSelection mouseSelection;
-	WallBoard wallBoard;
-	HeadsUpDisplay hud;
-	ArrayList<GameObject> objects = new ArrayList<GameObject>();
+	//width and height of the window
+	private int WINDOW_W = 640;
+	private int WINDOW_H = 480;
+	
 	private Thread t;
-	int mouseX = 0;
-	int mouseY = 0;
+	
+	private GameFrame frame;
+	private MouseSelection mouseSelection;
+	private WallBoard wallBoard;
+	private HeadsUpDisplay hud;
+	
+	private Player player;
+	private Enemy enemy;
+	private ArrayList<GameObject> objects = new ArrayList<GameObject>();
+
+
 	boolean inRange = false;
 	boolean isLeftClick = false;
 	boolean isRightClick = false;
+	
+	private int mouseX = 0;
+	private int mouseY = 0;
+	
+	//minion spawners
+	List<Rectangle> spawnPoints = new ArrayList<Rectangle>();
 	
 	public GamePanel(){ 
 		wallBoard = new WallBoard();
@@ -48,12 +60,18 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, KeyLis
 		addMouseMotionListener(this);
 		
 		frame = new GameFrame();
+		frame.setContentPane(this);
 		frame.addKeyListener(this);
-		frame.add(this);
+		frame.pack();
 		
 		t = new Thread(this);
 		t.start();
 		hud = new HeadsUpDisplay(getWidth(), getHeight());
+		
+		spawnPoints.add(new Rectangle(0, 0, 20, 20));
+		spawnPoints.add(new Rectangle(WINDOW_W - 20, 0, 20, 20));
+		spawnPoints.add(new Rectangle(0, WINDOW_H, 20, 20));
+		spawnPoints.add(new Rectangle(WINDOW_W - 20, WINDOW_H - 20, 20, 20));
 	}
 	
 	@Override
@@ -64,8 +82,11 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, KeyLis
 			
 			if(counter > 200){
 				player.update(wallBoard.getObjects());
-				enemy.update(wallBoard.getObjects(), player);
 				wallBoard.update(objects);
+				
+				for(GameObject o : objects){
+					o.update(wallBoard.getObjects(), player);
+				}
 			}
 			
 			counter++;
@@ -79,10 +100,21 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, KeyLis
 		g.clearRect(0, 0, this.getWidth(), this.getHeight());
 		
 		player.draw(g);
-		enemy.draw(g);
 		mouseSelection.draw(g);
 		wallBoard.draw(g);
 		hud.draw(g);
+		
+		for(GameObject o : objects)
+			o.draw(g);
+		
+		g.setColor(Color.black);
+		String s = "( " + mouseX + " , " + mouseY + " )";
+		g.drawString(s, mouseX - s.length()*3, mouseY + 2);
+		
+		g.setColor(Color.red);
+		for(Rectangle r : spawnPoints){
+			g.fillRect((int)r.getX(), (int)r.getY(), (int)r.getWidth(), (int)r.getHeight());
+		}
 	}
 	
 	  /////////////////////////////////////////////////
@@ -95,6 +127,8 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, KeyLis
 		if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
 			frame.dispose();
 		player.update(e, wallBoard.getObjects());
+		
+
 		//System.out.println("keypressed");
 	}
 
@@ -149,6 +183,13 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, KeyLis
 		mouseX = e.getX();
 		mouseY = e.getY();
 		
+		//if it is clicked, spawn enemies
+		for(Rectangle r : spawnPoints){
+			if(r.contains(e.getX(), e.getY())){
+				objects.add(new Enemy((int)(r.getX() + r.getWidth()), (int)(r.getY() + r.getHeight())));
+				System.out.println("adding enemy");
+			}
+		}
 		
 	}
 
@@ -180,5 +221,15 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, KeyLis
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		player.updateRotation(e.getX(), e.getY());
+		mouseX = e.getX();
+		mouseY = e.getY();
+	}
+	
+	  /////////////////////////////////////////////////
+	 //                 END EVENTS                  //
+	/////////////////////////////////////////////////
+	
+	public Dimension getPreferredSize(){
+		return new Dimension(WINDOW_W, WINDOW_H);
 	}
 }

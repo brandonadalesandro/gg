@@ -19,5 +19,9 @@ public class Sword extends GameObject{
 		g2d.setColor(Color.red);
 		g2d.draw(s);
 	}
+	
+	public Sword getNew(int x, int y){
+		return new Sword(x, y);
+	}
 
 }

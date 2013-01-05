@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.List;
 
 
 public class GameObject {
@@ -23,14 +24,18 @@ public class GameObject {
 	}
 	
 	public void draw(Graphics g){
+		draw(g, 0, getX(), getY());
 	}	
 	
 	public void draw(Graphics g, double rotation, int axisx, int axisy){
-		draw(g);
 	}
 	
 	public void update(){
 	
+	}
+	
+	public void update(List<PlaceableGameObject> list, Player p){
+		update();
 	}
 	
 	//getter methods//
@@ -77,5 +82,9 @@ public class GameObject {
 	
 	public void rightAction(){
 		
+	}
+	
+	public GameObject getNew(int x, int y){
+		return new GameObject(x, y, 10, 10);
 	}
 }
