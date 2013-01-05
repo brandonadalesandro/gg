@@ -176,6 +176,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener, KeyLis
 		else if(e.getButton() == MouseEvent.BUTTON3){
 			isRightClick = true;
 			wallBoard.clearPotentialObjects();
+			player.doRightAction(wallBoard);
 		}
 
 		mouseSelection.mouseClick(e);
